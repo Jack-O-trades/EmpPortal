@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from bson import ObjectId
-from .db import get_employees_collection
+from .db import get_employees_collection, get_notes_collection
 import math
 import cloudinary
 import cloudinary.uploader
@@ -95,8 +95,37 @@ class ManualEntryView(APIView):
                     doc['exitDate'] = dt.strftime('%d %B %Y')
                 except:
                     pass
+            collection = get_employees_collection()
+            collection.insert_one(doc)
             
-            # Handle Image Upload
+            return Response({'message': 'Data entered successfully!'})
+        except Exception as e:
+            return Response({'error': str(e)}, status=500)
+
+class NotesView(APIView):
+    def get(self, request):
+        try:
+            collection = get_notes_collection()
+            notes = list(collection.find().sort('_id', -1))
+            for note in notes:
+                note['_id'] = str(note['_id'])
+            return Response({'notes': notes})
+        except Exception as e:
+            return Response({'error': str(e)}, status=500)
+
+    def post(self, request):
+        try:
+            data = request.data
+            
+            doc = {
+                'name': data.get('name', '').strip(),
+                'phone': data.get('phone', '').strip(),
+                'address': data.get('address', '').strip(),
+                'designation': data.get('designation', '').strip(),
+                'extra_notes': data.get('extra_notes', '').strip(),
+            }
+            
+            # Handle Image Upload for Notes
             image_url = None
             if 'image' in request.FILES:
                 try:
@@ -106,10 +135,10 @@ class ManualEntryView(APIView):
                 except Exception as img_err:
                     print("Cloudinary upload error:", str(img_err))
             
-            collection = get_employees_collection()
+            collection = get_notes_collection()
             collection.insert_one(doc)
             
-            return Response({'message': 'Data entered successfully!'})
+            return Response({'message': 'Note added successfully!'})
         except Exception as e:
             return Response({'error': str(e)}, status=500)
 

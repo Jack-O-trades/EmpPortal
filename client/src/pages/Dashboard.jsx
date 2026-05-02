@@ -15,8 +15,7 @@ export default function Dashboard() {
     exitDate: '',
     address: '',
     designation: '',
-    place: '',
-    image: null
+    place: ''
   });
 
   const handleDragOver = (e) => e.preventDefault();
@@ -51,23 +50,10 @@ export default function Dashboard() {
     e.preventDefault();
     setStatus('uploading');
     try {
-      const fd = new FormData();
-      fd.append('name', formData.name);
-      fd.append('place', formData.place);
-      fd.append('phone', formData.phone);
-      fd.append('exitDate', formData.exitDate);
-      fd.append('address', formData.address);
-      fd.append('designation', formData.designation);
-      if (formData.image) {
-        fd.append('image', formData.image);
-      }
-
-      const res = await axios.post('/api/manual-entry/', fd, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      const res = await axios.post('/api/manual-entry/', formData);
       setStatus('success');
       setMessage(res.data.message);
-      setFormData({ name: '', phone: '', exitDate: '', address: '', designation: '', place: '', image: null });
+      setFormData({ name: '', phone: '', exitDate: '', address: '', designation: '', place: '' });
     } catch (err) {
       setStatus('error');
       setMessage(err.response?.data?.error || 'Failed to enter data');
@@ -123,17 +109,6 @@ export default function Dashboard() {
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">Address</label>
                 <input type="text" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none" placeholder="123 Main St..." />
-              </div>
-              <div className="md:col-span-2 bg-indigo-50 p-6 rounded-2xl border border-indigo-100 flex flex-col items-center justify-center">
-                <label className="block text-sm font-bold text-indigo-900 mb-2">Employee Photo (Camera or File)</label>
-                <input 
-                  type="file" 
-                  accept="image/*" 
-                  capture="environment" 
-                  onChange={e => setFormData({...formData, image: e.target.files[0]})} 
-                  className="w-full max-w-sm"
-                />
-                <p className="text-xs text-indigo-500 mt-2 text-center">On a phone, this will let you open the camera directly.</p>
               </div>
             </div>
             

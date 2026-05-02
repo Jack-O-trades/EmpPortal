@@ -4,6 +4,7 @@ import Dashboard from './pages/Dashboard';
 import Places from './pages/Places';
 import Employees from './pages/Employees';
 import EmployeeDetail from './pages/EmployeeDetail';
+import Notes from './pages/Notes';
 import Navbar from './components/Navbar';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
             <Route path="/places" element={<Places />} />
             <Route path="/places/:placeName" element={<Employees />} />
             <Route path="/employee/:id" element={<EmployeeDetail />} />
+            <Route path="/notes" element={<Notes />} />
             
             <Route path="*" element={<Navigate to="/places" replace />} />
           </Routes>

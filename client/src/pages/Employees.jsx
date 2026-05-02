@@ -16,6 +16,27 @@ export default function Employees() {
   const [loading, setLoading] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
 
+  useEffect(() => {
+    const handlePopState = (e) => {
+      if (selectedEmployee) {
+        setSelectedEmployee(null);
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [selectedEmployee]);
+
+  const openModal = (emp) => {
+    setSelectedEmployee(emp);
+    window.history.pushState({ modalOpen: true }, '');
+  };
+
+  const closeModal = () => {
+    if (selectedEmployee) {
+      window.history.back();
+    }
+  };
+
   const fetchEmployees = async () => {
     setLoading(true);
     try {
@@ -122,7 +143,7 @@ export default function Employees() {
                     </div>
                     <div 
                       className="text-sm font-medium text-gray-900 cursor-pointer hover:text-indigo-600"
-                      onClick={() => setSelectedEmployee(emp)}
+                      onClick={() => openModal(emp)}
                     >
                       {emp.name || 'Unknown'}
                     </div>
@@ -140,7 +161,7 @@ export default function Employees() {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <button 
-                    onClick={() => setSelectedEmployee(emp)}
+                    onClick={() => openModal(emp)}
                     className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all"
                   >
                     <Eye className="h-5 w-5" />
@@ -208,7 +229,7 @@ export default function Employees() {
       {selectedEmployee && (
         <EmployeeModal 
           employee={selectedEmployee} 
-          onClose={() => setSelectedEmployee(null)} 
+          onClose={closeModal} 
         />
       )}
     </div>

@@ -3,7 +3,7 @@ services:
     name: customer-details-backend
     env: python
     # Install directly into Render’s isolated virtualenv
-    buildCommand: "pip install -r customer/requirements.txt"
+    buildCommand: "python -m pip install -r customer/requirements.txt"
     # Use the venv’s python to run gunicorn (the module is guaranteed to exist now)
     startCommand: "cd customer && python -m gunicorn customer.wsgi:application --bind 0.0.0.0:$PORT"
     envVars:

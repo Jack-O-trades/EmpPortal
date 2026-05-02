@@ -2,10 +2,20 @@ services:
   - type: web
     name: customer-details-backend
     env: python
-    buildCommand: "/opt/render/project/src/.venv/bin/pip install -r customer/requirements.txt"
+    # Install directly into Render’s isolated virtualenv
+    buildCommand: "pip install -r customer/requirements.txt"
+    # Use the venv’s python to run gunicorn (the module is guaranteed to exist now)
     startCommand: "cd customer && python -m gunicorn customer.wsgi:application --bind 0.0.0.0:$PORT"
     envVars:
       - key: PYTHON_VERSION
         value: 3.12.0
       - key: DJANGO_SETTINGS_MODULE
         value: customer.settings
+      - key: MONGO_URI
+        value: "mongodb+srv://OmmProut:HydroLipun123@employee.mgnxraa.mongodb.net/?retryWrites=true&w=majority"
+      - key: MONGO_DB_NAME
+        value: "employee_portal"
+      - key: SECRET_KEY
+        value: "emp-portal-super-secret-2026!"
+      - key: DEBUG
+        value: "False"

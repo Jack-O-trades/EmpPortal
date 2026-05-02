@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Search, ChevronLeft, Eye } from 'lucide-react';
 import EmployeeModal from '../components/EmployeeModal';
 
 export default function Employees() {
   const { placeName } = useParams();
+  const navigate = useNavigate();
   const [employees, setEmployees] = useState([]);
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState(1);
@@ -55,9 +56,9 @@ export default function Employees() {
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center gap-4">
-        <Link to="/places" className="p-2 bg-white rounded-full shadow-sm hover:bg-gray-50 text-gray-600 transition-colors">
+        <button onClick={() => navigate(-1)} className="p-2 bg-white rounded-full shadow-sm hover:bg-gray-50 text-gray-600 transition-colors">
           <ChevronLeft className="h-5 w-5" />
-        </Link>
+        </button>
         <div>
           <h1 className="text-3xl font-extrabold text-gray-900">Employees in {placeName}</h1>
           <p className="text-gray-500 mt-1">Found {total} records</p>

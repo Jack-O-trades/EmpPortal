@@ -44,12 +44,12 @@ export default function EmployeeDetail() {
   return (
     <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
       <div className="flex items-center gap-4">
-        <button 
-          onClick={() => navigate(-1)} 
-          className="p-3 bg-white rounded-full shadow-sm hover:bg-gray-50 text-gray-600 transition-colors border border-gray-100"
+        <Link 
+          to={employee.place ? `/places/${encodeURIComponent(employee.place)}` : '/places'} 
+          className="p-3 bg-white rounded-full shadow-sm hover:bg-gray-50 text-gray-600 transition-colors border border-gray-100 flex items-center justify-center"
         >
           <ChevronLeft className="h-6 w-6" />
-        </button>
+        </Link>
         <h1 className="text-3xl font-extrabold text-gray-900">Full Profile</h1>
       </div>
 

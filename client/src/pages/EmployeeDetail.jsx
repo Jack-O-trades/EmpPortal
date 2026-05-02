@@ -59,8 +59,12 @@ export default function EmployeeDetail() {
         <div className="relative z-10 px-8 pt-16 pb-8 sm:px-12">
           <div className="flex flex-col sm:flex-row items-center sm:items-end gap-6 mb-8">
             <div className="h-32 w-32 rounded-3xl bg-white p-2 shadow-lg">
-              <div className="h-full w-full rounded-2xl bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-5xl">
-                {employee.name ? employee.name.charAt(0).toUpperCase() : '?'}
+              <div className="h-full w-full rounded-2xl bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-5xl overflow-hidden">
+                {employee.image_url ? (
+                  <img src={employee.image_url} alt={employee.name} className="w-full h-full object-cover" />
+                ) : (
+                  employee.name ? employee.name.charAt(0).toUpperCase() : '?'
+                )}
               </div>
             </div>
             <div className="text-center sm:text-left pb-2">

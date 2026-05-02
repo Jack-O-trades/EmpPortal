@@ -5,7 +5,8 @@ from rest_framework.permissions import IsAuthenticated
 from bson import ObjectId
 from .db import get_employees_collection
 import math
-
+import cloudinary
+import cloudinary.uploader
 class FileUploadView(APIView):
     # permission_classes = [IsAuthenticated]
 
@@ -94,6 +95,16 @@ class ManualEntryView(APIView):
                     doc['exitDate'] = dt.strftime('%d %B %Y')
                 except:
                     pass
+            
+            # Handle Image Upload
+            image_url = None
+            if 'image' in request.FILES:
+                try:
+                    upload_result = cloudinary.uploader.upload(request.FILES['image'])
+                    image_url = upload_result.get('secure_url')
+                    doc['image_url'] = image_url
+                except Exception as img_err:
+                    print("Cloudinary upload error:", str(img_err))
             
             collection = get_employees_collection()
             collection.insert_one(doc)

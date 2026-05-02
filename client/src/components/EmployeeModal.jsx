@@ -62,8 +62,12 @@ export default function EmployeeModal({ employee, onClose }) {
 
           {/* Avatar */}
           <div className="absolute top-14 left-1/2 -translate-x-1/2">
-            <div className="h-28 w-28 rounded-3xl bg-white shadow-xl border-4 border-white flex items-center justify-center text-indigo-700 font-black text-5xl bg-gradient-to-br from-indigo-50 to-indigo-100">
-              {name.charAt(0).toUpperCase()}
+            <div className="h-28 w-28 rounded-3xl bg-white shadow-xl border-4 border-white flex items-center justify-center text-indigo-700 font-black text-5xl bg-gradient-to-br from-indigo-50 to-indigo-100 overflow-hidden">
+              {employee.image_url ? (
+                <img src={employee.image_url} alt={name} className="w-full h-full object-cover" />
+              ) : (
+                name.charAt(0).toUpperCase()
+              )}
             </div>
           </div>
 
